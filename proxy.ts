@@ -10,7 +10,7 @@ function extractSubdomain(request: NextRequest): string | null {
 	if (url.includes("localhost") || url.includes("127.0.0.1")) {
 		// Try to extract subdomain from the full URL
 		const fullUrlMatch = url.match(/http:\/\/([^.]+)\.localhost/);
-		if (fullUrlMatch && fullUrlMatch[1]) {
+		if (fullUrlMatch?.[1]) {
 			return fullUrlMatch[1];
 		}
 
@@ -40,7 +40,7 @@ function extractSubdomain(request: NextRequest): string | null {
 	return isSubdomain ? hostname.replace(`.${rootDomainFormatted}`, "") : null;
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl;
 	const subdomain = extractSubdomain(request);
 
