@@ -15,7 +15,7 @@ export default async function SubdomainLayout({
     <div
       data-theme={theme.id}
       style={toThemeStyle(theme)}
-      className="min-h-screen bg-base-100 text-base-content"
+      className="min-h-screen bg-base-200 text-base-content"
     >
       {children}
     </div>
