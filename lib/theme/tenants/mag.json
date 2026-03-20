@@ -1,0 +1,10 @@
+{
+	"id": "mag_theme",
+	"label": "Mag",
+	"tokens": {
+		"--color-primary": "oklch(33.152% 0.113 267.845)",
+		"--color-primary-content": "oklch(96% 0.020 267.845)",
+		"--color-secondary": "oklch(69.029% 0.155 276.258)",
+		"--color-secondary-content": "oklch(14% 0.020 276.258)"
+	}
+}

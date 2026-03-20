@@ -6,15 +6,12 @@ function extractSubdomain(request: NextRequest): string | null {
 	const host = request.headers.get("host") || "";
 	const hostname = host.split(":")[0];
 
-	// Local development environment
 	if (url.includes("localhost") || url.includes("127.0.0.1")) {
-		// Try to extract subdomain from the full URL
 		const fullUrlMatch = url.match(/http:\/\/([^.]+)\.localhost/);
 		if (fullUrlMatch?.[1]) {
 			return fullUrlMatch[1];
 		}
 
-		// Fallback to host header approach
 		if (hostname.includes(".localhost")) {
 			return hostname.split(".")[0];
 		}
@@ -22,10 +19,8 @@ function extractSubdomain(request: NextRequest): string | null {
 		return null;
 	}
 
-	// Production environment
 	const rootDomainFormatted = rootDomain.split(":")[0];
 
-	// Regular subdomain detection
 	const isSubdomain =
 		hostname !== rootDomainFormatted &&
 		hostname !== `www.${rootDomainFormatted}` &&
@@ -39,13 +34,11 @@ export async function proxy(request: NextRequest) {
 	const subdomain = extractSubdomain(request);
 
 	if (subdomain) {
-		// For the root path on a subdomain, rewrite to the subdomain page
 		if (pathname === "/") {
 			return NextResponse.rewrite(new URL(`${subdomain}`, request.url));
 		}
 	}
 
-	// On the root domain, allow normal access
 	return NextResponse.next();
 }
 
