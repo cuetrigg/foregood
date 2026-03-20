@@ -1,65 +1,67 @@
-import Image from "next/image";
+import Navbar from "@/components/navbar";
+import BusinessUnitTable from "@/components/tables/businessunitstable";
+import EmployeeTable from "@/components/tables/employeetable";
+import { rootApiDomain } from "@/lib/utils";
+import { AppConfig } from "@/types/config";
 
-export default function SubdomainPage() {
+export default async function SubdomainPage({ params }: {
+  params: Promise<{ subdomain: string }>
+}) {
+  const { subdomain } = await params;
+  const response = await fetch(`https://${subdomain}.${rootApiDomain}/api/app/config`);
+
+  if (!response.ok) {
+    throw new Error("Failed to load config");
+  }
+
+  const data: AppConfig = await response.json();
+  
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      <Navbar data={data} />
+      <div className="container relative flex flex-col justify-between h-full max-w-4/5 px-10 mx-auto xl:px-0 mt-5">
+        <h2 className="mb-1 text-3xl font-extrabold leading-tight text-gray-900">Leaderboard</h2>
+        <p className="mb-12 text-lg text-gray-500">Here are our competing candidates.</p>
+        <div className="w-full">
+            <div className="flex flex-col w-full mb-10 sm:flex-row">
+                <div className="w-full mb-10 sm:mb-0 sm:w-1/2">
+                    <div className="relative h-full ml-0 mr-0 sm:mr-10">
+                        <span className="absolute top-0 left-0 w-full h-full mt-1 ml-1 bg-primary rounded-lg"></span>
+                        <div className="relative h-full p-5 bg-white border-2 border-primary rounded-lg">
+                            <EmployeeTable data={data} />
+                        </div>
+                    </div>
+                </div>
+                <div className="w-full h-96 sm:w-1/2">
+                    <div className="relative h-full ml-0 md:mr-10">
+                        <span className="absolute top-0 left-0 w-full h-full mt-1 ml-1 bg-secondary rounded-lg"></span>
+                        <div className="relative h-full p-5 bg-white border-2 border-secondary rounded-lg overflow-y-auto">
+                            <BusinessUnitTable data={data} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="flex flex-col w-full mb-5 sm:flex-row">
+                <div className="flex-1">
+                </div>
+                <div className="w-full mb-10 sm:mb-0 sm:w-1/2">
+                    <div className="relative h-full ml-0 mr-0 sm:mr-10">
+                        <span className="absolute top-0 left-0 w-full h-full mt-1 ml-1 rounded-lg bg-gradient-to-r from-primary to-secondary"></span>
+                        <div className="relative h-full p-5 bg-white border-2 border-primary rounded-lg">
+                            <div className="flex items-center -mt-1">
+                                <h3 className="my-2 ml-3 text-lg font-bold text-gray-800">Hacking / RE</h3>
+                            </div>
+                            <p className="mt-3 mb-1 text-xs font-medium text-yellow-400 uppercase">------------</p>
+                            <p className="mb-2 text-gray-600">A security hacker is someone who explores methods for breaching
+                                defenses and exploiting weaknesses in a computer system or network.</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="flex-1">
+                </div>
+            </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
     </div>
+    </>
   );
 }
