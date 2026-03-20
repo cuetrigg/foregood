@@ -1,0 +1,10 @@
+{
+	"id": "blink_theme",
+	"label": "Blink",
+	"tokens": {
+		"--color-primary": "oklch(83.159% 0.145 93.214)",
+		"--color-primary-content": "oklch(14% 0.020 93.214)",
+		"--color-secondary": "oklch(31.972% 0.020 277.112)",
+		"--color-secondary-content": "oklch(96% 0.020 277.112)"
+	}
+}

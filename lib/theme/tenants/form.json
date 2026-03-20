@@ -1,0 +1,10 @@
+{
+	"id": "form_theme",
+	"label": "Form",
+	"tokens": {
+		"--color-primary": "oklch(65.421% 0.233 32.416)",
+		"--color-primary-content": "oklch(14% 0.020 32.416)",
+		"--color-secondary": "oklch(77.232% 0.171 63.661)",
+		"--color-secondary-content": "oklch(14% 0.020 63.661)"
+	}
+}
