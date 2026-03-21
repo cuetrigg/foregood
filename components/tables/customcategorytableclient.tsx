@@ -1,12 +1,83 @@
 "use client";
 
+import { useState } from "react";
+
 import { usePagination } from "@/lib/usepagination";
 
-import type { LeaderboardMember } from "@/types/leaderboard";
+import type { CustomCategories, LeaderboardMember } from "@/types/leaderboard";
 
 import { PaginationControls } from "./paginationcontrols";
 
 export function CustomCategoryTableClient({
+	customCategories,
+	pageSize,
+}: {
+	customCategories: CustomCategories;
+	pageSize: number;
+}) {
+	const [selectedIndex, setSelectedIndex] = useState(0);
+	const activeIndex = customCategories[selectedIndex] ? selectedIndex : 0;
+	const selectedCategory = customCategories[activeIndex];
+	const hasAlternatives = customCategories.length > 1;
+
+	return (
+		<>
+			<div className="-mt-1 mb-1">
+				{hasAlternatives ? (
+					<div className="dropdown">
+						Category:
+						<button type="button" className="btn m-1">
+							{selectedCategory?.name ?? "Unavailable"}{" "}
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								height="24px"
+								viewBox="0 -960 960 960"
+								width="24px"
+								fill="#000000"
+							>
+								<path d="M480-360 280-560h400L480-360Z" />
+							</svg>
+						</button>
+						<ul className="dropdown-content menu mt-1 w-64 rounded-box bg-base-100 p-2 shadow-sm z-10">
+							{customCategories.map((customCategory, index) => {
+								if (index === activeIndex) {
+									return null;
+								}
+
+								return (
+									<li key={`${customCategory.name}_${index}`}>
+										<button
+											type="button"
+											onClick={() => setSelectedIndex(index)}
+										>
+											{customCategory.name}
+										</button>
+									</li>
+								);
+							})}
+						</ul>
+					</div>
+				) : (
+					<div className="flex items-center">
+						<h3 className="my-2 ml-3 text-base font-bold text-gray-800">
+							Category: {selectedCategory?.name ?? "Unavailable"}
+						</h3>
+					</div>
+				)}
+			</div>
+			<p className="mb-1 text-xs font-medium text-secondary uppercase">
+				------------
+			</p>
+			<CustomCategoryMembersTable
+				key={`custom-category-${activeIndex}`}
+				members={selectedCategory?.members ?? []}
+				pageSize={pageSize}
+			/>
+		</>
+	);
+}
+
+function CustomCategoryMembersTable({
 	members,
 	pageSize,
 }: {

@@ -1,13 +1,84 @@
 "use client";
 
+import { useState } from "react";
+
 import { usePagination } from "@/lib/usepagination";
 
-import type { LeaderboardMember } from "@/types/leaderboard";
+import type { BusinessUnits, LeaderboardMember } from "@/types/leaderboard";
 
 import { MemberStatsModal } from "../memberstatsmodal";
 import { PaginationControls } from "./paginationcontrols";
 
 export function BusinessUnitsTableClient({
+	businessUnits,
+	pageSize,
+}: {
+	businessUnits: BusinessUnits;
+	pageSize: number;
+}) {
+	const [selectedIndex, setSelectedIndex] = useState(0);
+	const activeIndex = businessUnits[selectedIndex] ? selectedIndex : 0;
+	const selectedBusinessUnit = businessUnits[activeIndex];
+	const hasAlternatives = businessUnits.length > 1;
+
+	return (
+		<>
+			<div className="-mt-1 mb-1">
+				{hasAlternatives ? (
+					<div className="dropdown">
+						Business Unit:
+						<button type="button" className="btn m-1">
+							{selectedBusinessUnit?.name ?? "Unavailable"}{" "}
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								height="24px"
+								viewBox="0 -960 960 960"
+								width="24px"
+								fill="#000000"
+							>
+								<path d="M480-360 280-560h400L480-360Z" />
+							</svg>
+						</button>
+						<ul className="dropdown-content menu mt-1 w-64 rounded-box bg-base-100 p-2 shadow-sm z-10">
+							{businessUnits.map((businessUnit, index) => {
+								if (index === activeIndex) {
+									return null;
+								}
+
+								return (
+									<li key={`${businessUnit.name}_${index}`}>
+										<button
+											type="button"
+											onClick={() => setSelectedIndex(index)}
+										>
+											{businessUnit.name}
+										</button>
+									</li>
+								);
+							})}
+						</ul>
+					</div>
+				) : (
+					<div className="flex items-center">
+						<h3 className="my-2 ml-3 text-base font-bold text-gray-800">
+							Business Unit: {selectedBusinessUnit?.name ?? "Unavailable"}
+						</h3>
+					</div>
+				)}
+			</div>
+			<p className="mb-1 text-xs font-medium text-secondary uppercase">
+				------------
+			</p>
+			<BusinessUnitMembersTable
+				key={`business-unit-${activeIndex}`}
+				members={selectedBusinessUnit?.members ?? []}
+				pageSize={pageSize}
+			/>
+		</>
+	);
+}
+
+function BusinessUnitMembersTable({
 	members,
 	pageSize,
 }: {
