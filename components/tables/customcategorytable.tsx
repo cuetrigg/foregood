@@ -20,23 +20,11 @@ export default async function CustomCategoryTable({
 	}
 
 	const customcategories: CustomCategories = await response.json();
-	const customCategory = customcategories[0];
-	const members = customCategory?.members;
 
 	return (
-		<div>
-			<div className="flex items-center -mt-1">
-				<h3 className="my-2 ml-3 text-base font-bold text-gray-800">
-					Category: {customCategory?.name ?? "Unavailable"}
-				</h3>
-			</div>
-			<p className="mb-1 text-xs font-medium text-secondary uppercase">
-				------------
-			</p>
-			<CustomCategoryTableClient
-				members={members}
-				pageSize={data.leaderBoardSettings.topVolunteersLimit}
-			/>
-		</div>
+		<CustomCategoryTableClient
+			customCategories={customcategories}
+			pageSize={data.leaderBoardSettings.topVolunteersLimit}
+		/>
 	);
 }
