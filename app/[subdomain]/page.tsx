@@ -1,5 +1,6 @@
 import Navbar from "@/components/navbar";
 import BusinessUnitTable from "@/components/tables/businessunitstable";
+import CustomCategoryTable from "@/components/tables/customcategorytable";
 import EmployeeTable from "@/components/tables/employeetable";
 import { rootApiDomain } from "@/lib/utils";
 import { AppConfig } from "@/types/config";
@@ -41,25 +42,25 @@ export default async function SubdomainPage({ params }: {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col w-full mb-5 sm:flex-row">
-                <div className="flex-1">
-                </div>
-                <div className="w-full mb-10 sm:mb-0 sm:w-1/2">
-                    <div className="relative h-full ml-0 mr-0 sm:mr-10">
-                        <span className="absolute top-0 left-0 w-full h-full mt-1 ml-1 rounded-lg bg-gradient-to-r from-primary to-secondary"></span>
-                        <div className="relative h-full p-5 bg-white border-2 border-primary rounded-lg">
-                            <div className="flex items-center -mt-1">
-                                <h3 className="my-2 ml-3 text-lg font-bold text-gray-800">Hacking / RE</h3>
+            {
+                data.userSettings.custom_employee_category_required &&
+                (
+                    <div className="flex flex-col w-full mb-5 sm:flex-row">
+                        <div className="flex-1">
+                        </div>
+                        <div className="w-full mb-10 sm:mb-0 sm:w-1/2">
+                            <div className="relative h-full ml-0 mr-0 sm:mr-10">
+                                <span className="absolute top-0 left-0 w-full h-full mt-1 ml-1 rounded-lg bg-gradient-to-r from-primary to-secondary"></span>
+                                <div className="relative h-full p-5 bg-white border-2 border-primary rounded-lg">
+                            	    <CustomCategoryTable data={data} />
+                                </div>
                             </div>
-                            <p className="mt-3 mb-1 text-xs font-medium text-yellow-400 uppercase">------------</p>
-                            <p className="mb-2 text-gray-600">A security hacker is someone who explores methods for breaching
-                                defenses and exploiting weaknesses in a computer system or network.</p>
+                        </div>
+                        <div className="flex-1">
                         </div>
                     </div>
-                </div>
-                <div className="flex-1">
-                </div>
-            </div>
+                )
+            }
         </div>
     </div>
     </>
