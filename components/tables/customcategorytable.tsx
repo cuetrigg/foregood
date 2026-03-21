@@ -1,50 +1,51 @@
 import { rootApiDomain } from "@/lib/utils";
-
 import type { AppConfig } from "@/types/config";
-import type { BusinessUnits } from "@/types/leaderboard";
+import type { CustomCategories } from "@/types/leaderboard";
 import { MemberStatsModal } from "../memberstatsmodal";
 
-export default async function BusinessUnitTable({ data }: { data: AppConfig }) {
+export default async function CustomCategoryTable({
+	data,
+}: {
+	data: AppConfig;
+}) {
 	const client = data.name.toLowerCase();
 
 	const response = await fetch(
-		`https://${client}.${rootApiDomain}/api/leaderboard/business-units`,
+		`https://${client}.${rootApiDomain}/api/leaderboard/custom-categories`,
 	);
 
 	if (!response.ok) {
 		throw new Error("Failed to load business units leaderboard data");
 	}
 
-	const businessunits: BusinessUnits = await response.json();
+	const customcategories: CustomCategories = await response.json();
 
 	return (
-		<div className="overflow-x-auto">
+		<div className="overflow-x-auto h-96">
 			<div className="flex items-center -mt-1">
 				<h3 className="my-2 ml-3 text-base font-bold text-gray-800">
-					Business Unit: {businessunits[0].name}
+					Category: {customcategories[0].name}
 				</h3>
 			</div>
 			<p className="mb-1 text-xs font-medium text-secondary uppercase">
 				------------
 			</p>
 
-			<table className="table">
+			<table className="table table-xs table-pin-rows table-pin-cols">
 				<thead>
 					<tr>
 						<th></th>
-						<th>Name</th>
-						<th>Connections</th>
-						<th></th>
+						<td>Name</td>
+						<td>Connections</td>
 					</tr>
 				</thead>
 				<tbody>
-					{businessunits[0].members
-						.slice(0, data.leaderBoardSettings.topVolunteersLimit)
-						.map((member, i) => (
+					{customcategories[0].members.map((member, i) => {
+						return (
 							<tr
 								key={`${member.name.replaceAll(" ", "_").toLowerCase()}_${member.connections}`}
 							>
-								<td>{i + 1}</td>
+								<th>{i + 1}</th>
 								<td>
 									<div className="flex items-center gap-3">
 										<div className="avatar">
@@ -64,16 +65,10 @@ export default async function BusinessUnitTable({ data }: { data: AppConfig }) {
 										</div>
 									</div>
 								</td>
-								<td>
-									<span className="badge badge-ghost badge-sm">
-										{member.connections}
-									</span>
-								</td>
-								<th>
-									<MemberStatsModal member={member} />
-								</th>
+								<td>{member.connections}</td>
 							</tr>
-						))}
+						);
+					})}
 				</tbody>
 			</table>
 		</div>
