@@ -1,3 +1,7 @@
+/*
+	Ref - lttps://github.com/vercel/platforms/blob/main/middleware.ts
+*/
+
 import { type NextRequest, NextResponse } from "next/server";
 import { rootDomain } from "@/lib/utils";
 
