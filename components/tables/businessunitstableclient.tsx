@@ -6,7 +6,6 @@ import { usePagination } from "@/lib/usepagination";
 
 import type { BusinessUnits, LeaderboardMember } from "@/types/leaderboard";
 
-import { MemberStatsModal } from "../memberstatsmodal";
 import { PaginationControls } from "./paginationcontrols";
 
 export function BusinessUnitsTableClient({
@@ -114,7 +113,6 @@ function BusinessUnitMembersTable({
 							<th></th>
 							<th>Name</th>
 							<th>Connections</th>
-							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -147,9 +145,6 @@ function BusinessUnitMembersTable({
 										{member.connections}
 									</span>
 								</td>
-								<th>
-									<MemberStatsModal member={member} />
-								</th>
 							</tr>
 						))}
 					</tbody>
