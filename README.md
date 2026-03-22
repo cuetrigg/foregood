@@ -28,7 +28,7 @@ Open [http://{tenant}.localhost:3000](http://{tenant}.localhost:3000) with your 
 
 ---
 
-##Assumptions made
+## Assumptions made
 
 1. If `userSettings.custom_employee_category_required` is set to false there won't be custom categories.
 2. `topVolunteersLimit` is for how many entries/rows show per page of the tables.
@@ -51,14 +51,14 @@ unless you want to compare categories but the focus is maybe more the members of
 ```
 4. Data is already sorted in descending.
 
-##Tradeoffs
+## Tradeoffs
 
 1. All the components styles are placed in the `global.css` file instead of seperate component files to gain speed and simplicity over maintainability and complexity.
 2. Most components are created within the table component files instead of being splitted into their own component files in order to gain the same andvantage as point 1.
 3. Created client components wrappers for exmaple employeetable.tsx that wraps around employeetableclient.tsx for isolation and security over less boilerplate and simplcity.
 4. Theme configs per tenants are individual json files as the client base growns this could become a nightmare, an optimal solution would be to return client specific theme data over api as json.
 
-##Improvements with more time
+## Improvements with more time
 
 1. More utilization of the frameworks tools like error, loading, forbidden, not-found pages on routes.
 2. Better error handling and more user friendly error messages.
